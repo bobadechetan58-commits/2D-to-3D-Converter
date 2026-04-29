@@ -1,0 +1,7 @@
+[32mGroq API Key found. Length: 56[0m
+Using Groq vision model: meta-llama/llama-4-scout-17b-16e-instruct
+Backend running at http://localhost:5001
+--- New Request Received ---
+Image received, size: 63270
+--- New Request Received ---
+Image received, size: 95404

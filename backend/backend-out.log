@@ -1,0 +1,1001 @@
+
+> start
+> node server.js
+
+[32mGroq API Key found. Length: 56[0m
+Using Groq vision model: meta-llama/llama-4-scout-17b-16e-instruct
+Backend running at http://localhost:5000
+--- New Request Received ---
+--- New Request Received ---
+Images received: 63270
+AI raw response: {
+"units": "mm",
+  "assumptions": ["inferred thickness of 5mm for the plate"],
+  "operations": [
+    {
+      "op": "roundedPlate",
+      "name": "base plate",
+      "size": [100, 100, 5],
+      "position": [50, 50, 2.5],
+      "plane": "xy",
+      "cornerRadii": {
+        "topLeft": 0,
+        "topRight": 15,
+        "bottomRight": 10,
+        "bottomLeft": 0
+      },
+      "color": "#30cfd0"
+    },
+    {
+      "op": "gusset",
+      "name": "support rib",
+      "size": [5, 40, 50],
+      "position": [25, 20, 5],
+      "corner": "backBottom",
+      "color": "#ff8a3d"
+    },
+    {
+      "op": "cutCylinder",
+      "name": "hole",
+      "radius": 5,
+      "height": 100,
+      "position": [75, 75, 2.5],
+      "axis": "z"
+    },
+    {
+      "op": "cutWedge",
+      "name": "sloped cut",
+      "size": [85, 40, 5],
+      "position": [42.5, 10, 2.5],
+      "rotation": [0, 0, 0],
+      "highSide": "back"
+    }
+  ]
+}
+--- New Request Received ---
+Images received: 95404
+AI raw response: {
+"units": "mm",
+  "assumptions": ["inferred missing dimensions from orthographic views"],
+  "operations": [
+    {
+      "op": "box",
+      "name": "base block",
+      "size": [40, 15, 30],
+      "position": [20, 7.5, 15],
+      "color": "#30cfd0"
+    },
+    {
+      "op": "box",
+      "name": "upper block",
+      "size": [30, 11, 20],
+      "position": [15, 18.5, 10],
+      "color": "#30cfd0"
+    }
+  ]
+}
+--- New Request Received ---
+Images received: 22170
+AI raw response: {
+"units": "mm",
+  "assumptions": ["inferred rectangular block with step and sloped face"],
+  "operations": [
+    {
+      "op": "box",
+      "name": "base block",
+      "size": [60, 40, 60],
+      "position": [30, 20, 30],
+      "color": "#30cfd0"
+    },
+    {
+      "op": "box",
+      "name": "step block",
+      "size": [20, 20, 20],
+      "position": [70, 20, 30],
+      "color": "#30cfd0"
+    },
+    {
+      "op": "cutBox",
+      "name": "rectangular pocket",
+      "size": [20, 20, 60],
+      "position": [30, 40, 30],
+      "rotation": [0, 0, 0]
+    },
+    {
+      "op": "wedge",
+      "name": "sloped ramp",
+      "size": [40, 20, 60],
+      "position": [50, 13.33, 30],
+      "rotation": [0, 0, 0],
+      "highSide": "front",
+      "color": "#30cfd0"
+    }
+  ]
+}
+--- New Request Received ---
+Images received: 91786
+AI raw response: {
+"units": "mm",
+  "assumptions": ["No dimensions provided, assuming 10mm for demonstration"],
+  "operations": [
+    {
+      "op": "box",
+      "name": "base block",
+      "size": [10, 10, 10],
+      "position": [5, 5, 5],
+      "color": "#30cfd0"
+    },
+    {
+      "op": "box",
+      "name": "vertical block",
+      "size": [10, 10, 10],
+      "position": [15, 5, 5],
+      "color": "#30cfd0"
+    }
+  ]
+}
+--- New Request Received ---
+Images received: 22410
+AI raw response: {
+"units": "mm",
+  "assumptions": ["inferred missing corner radii"],
+  "operations": [
+    {
+      "op": "box",
+      "name": "base block",
+      "size": [44, 40, 44],
+      "position": [22, 20, 22],
+      "color": "#30cfd0"
+    },
+    {
+      "op": "box",
+      "name": "vertical block",
+      "size": [68, 68, 12],
+      "position": [34, 74, 6],
+      "color": "#30cfd0"
+    },
+    {
+      "op": "cutWedge",
+      "name": "sloped face cut",
+      "size": [80, 68, 44],
+      "position": [40, 34, 22],
+      "rotation": [0, 0, 0],
+      "highSide": "front",
+      "color": "#30cfd0"
+    },
+    {
+      "op": "cutBox",
+      "name": "rectangular pocket",
+      "size": [68, 68, 12],
+      "position": [34, 90, 6],
+      "color": "#30cfd0"
+    }
+  ]
+}
+--- New Request Received ---
+Images received: 63270
+AI raw response: {
+"units": "mm",
+  "assumptions": ["Plate thickness is 10 mm where not specified."],
+  "operations": [
+    {
+      "op": "roundedPlate",
+      "name": "base plate",
+      "size": [100, 10, 100],
+      "position": [50, 5, 50],
+      "plane": "xz",
+      "cornerRadii": {
+        "topLeft": 0,
+        "topRight": 15,
+        "bottomRight": 15,
+        "bottomLeft": 0
+      },
+      "color": "#30cfd0"
+    },
+    {
+      "op": "roundedPlate",
+      "name": "vertical plate",
+      "size": [100, 100, 10],
+      "position": [50, 50, 5],
+      "plane": "xy",
+      "cornerRadii": {
+        "topLeft": 0,
+        "topRight": 10,
+        "bottomRight": 10,
+        "bottomLeft": 0
+      },
+      "color": "#30cfd0"
+    },
+    {
+      "op": "gusset",
+      "name": "triangular support rib",
+      "size": [10, 40, 10],
+      "position": [50, 10, 5],
+      "corner": "backBottom",
+      "color": "#ff8a3d"
+    },
+    {
+      "op": "cutCylinder",
+      "name": "through hole",
+      "radius": 5,
+      "height": 100,
+      "position": [75, 50, 5],
+      "axis": "y"
+    }
+  ]
+}
+--- New Request Received ---
+Images received: 95404
+AI raw response: {
+"units": "mm",
+  "assumptions": ["upper block centered on base"],
+  "operations": [
+    {
+      "op": "box",
+      "name": "base block",
+      "size": [60, 15, 40],
+      "position": [30, 7.5, 20],
+      "color": "#30cfd0"
+    },
+    {
+      "op": "box",
+      "name": "upper block",
+      "size": [30, 20, 30],
+      "position": [30, 22.5, 20],
+      "color": "#30cfd0"
+    }
+  ]
+}
+--- New Request Received ---
+Images received: 10687
+AI raw response: {
+"units": "mm",
+  "assumptions": ["No assumptions"],
+  "operations": [
+    {
+      "op": "cylinder",
+      "name": "base flange",
+      "radius": 90,
+      "height": 24,
+      "position": [0, 0, 0],
+      "axis": "z",
+      "color": "#30cfd0"
+    },
+    {
+      "op": "cutCylinder",
+      "name": "central bore",
+      "radius": 35,
+      "height": 24,
+      "position": [0, 0, 0],
+      "axis": "z"
+    },
+    {
+      "op": "cylinder",
+      "name": "raised hub",
+      "radius": 55,
+      "height": 8,
+      "position": [0, 0, 24],
+      "axis": "z",
+      "color": "#30cfd0"
+    },
+    {
+      "op": "cutCylinder",
+      "name": "groove",
+      "radius": 62.5,
+      "height": 3,
+      "position": [0, 0, 24],
+      "axis": "z"
+    },
+    {
+      "op": "cutCylinder",
+      "name": "groove inner",
+      "radius": 47.5,
+      "height": 3,
+      "position": [0, 0, 24],
+      "axis": "z"
+    },
+    {
+      "op": "cutCylinder",
+      "name": "bolt hole 1",
+      "radius": 8,
+      "height": 24,
+      "position": [72.5, 0, 0],
+      "axis": "z"
+    },
+    {
+      "op": "cutCylinder",
+      "name": "bolt hole 2",
+      "radius": 8,
+      "height": 24,
+      "position": [36.25, 62.82, 0],
+      "axis": "z"
+    },
+    {
+      "op": "cutCylinder",
+      "name": "bolt hole 3",
+      "radius": 8,
+      "height": 24,
+      "position": [-36.25, 62.82, 0],
+      "axis": "z"
+    },
+    {
+      "op": "cutCylinder",
+      "name": "bolt hole 4",
+      "radius": 8,
+      "height": 24,
+      "position": [-72.5, 0, 0],
+      "axis": "z"
+    },
+    {
+      "op": "cutCylinder",
+      "name": "bolt hole 5",
+      "radius": 8,
+      "height": 24,
+      "position": [-36.25, -62.82, 0],
+      "axis": "z"
+    },
+    {
+      "op": "cutCylinder",
+      "name": "bolt hole 6",
+      "radius": 8,
+      "height": 24,
+      "position": [36.25, -62.82, 0],
+      "axis": "z"
+    },
+    {
+      "op": "cutCylinder",
+      "name": "bolt hole 7",
+      "radius": 8,
+      "height": 24,
+      "position": [90, 0, 0],
+      "axis": "z"
+    },
+    {
+      "op": "cutCylinder",
+      "name": "bolt hole 8",
+      "radius": 8,
+      "height": 24,
+      "position": [0, 0, 0],
+      "axis": "z"
+    }
+  ]
+}
+--- New Request Received ---
+Images received: 63270
+AI raw response: {
+"units": "mm",
+  "assumptions": ["Plate thickness is 10 mm where not specified."],
+  "operations": [
+    {
+      "op": "roundedPlate",
+      "name": "base plate",
+      "size": [100, 10, 100],
+      "position": [50, 5, 50],
+      "plane": "xz",
+      "cornerRadii": {
+        "topLeft": 0,
+        "topRight": 15,
+        "bottomRight": 15,
+        "bottomLeft": 0
+      },
+      "color": "#30cfd0"
+    },
+    {
+      "op": "roundedPlate",
+      "name": "vertical plate",
+      "size": [100, 100, 10],
+      "position": [50, 50, 5],
+      "plane": "xy",
+      "cornerRadii": {
+        "topLeft": 0,
+        "topRight": 10,
+        "bottomRight": 10,
+        "bottomLeft": 0
+      },
+      "color": "#30cfd0"
+    },
+    {
+      "op": "gusset",
+      "name": "triangular support rib",
+      "size": [10, 40, 10],
+      "position": [50, 10, 5],
+      "corner": "backBottom",
+      "color": "#ff8a3d"
+    },
+    {
+      "op": "cutCylinder",
+      "name": "through hole",
+      "radius": 5,
+      "height": 100,
+      "position": [75, 50, 5],
+      "axis": "y"
+    }
+  ]
+}
+--- New Request Received ---
+Images received: 95404
+AI raw response: {
+"units": "mm",
+  "assumptions": ["upper block centered on base"],
+  "operations": [
+    {
+      "op": "box",
+      "name": "base block",
+      "size": [60, 15, 40],
+      "position": [30, 7.5, 20],
+      "color": "#30cfd0"
+    },
+    {
+      "op": "box",
+      "name": "upper block",
+      "size": [30, 20, 30],
+      "position": [30, 22.5, 20],
+      "color": "#30cfd0"
+    }
+  ]
+}
+--- New Request Received ---
+Images received: 10687
+AI raw response: {
+"units": "mm",
+  "assumptions": ["No assumptions"],
+  "operations": [
+    {
+      "op": "cylinder",
+      "name": "base flange",
+      "radius": 90,
+      "height": 24,
+      "position": [0, 0, 0],
+      "axis": "z",
+      "color": "#30cfd0"
+    },
+    {
+      "op": "cutCylinder",
+      "name": "central bore",
+      "radius": 35,
+      "height": 24,
+      "position": [0, 0, 0],
+      "axis": "z"
+    },
+    {
+      "op": "cylinder",
+      "name": "raised hub",
+      "radius": 55,
+      "height": 8,
+      "position": [0, 0, 24],
+      "axis": "z",
+      "color": "#30cfd0"
+    },
+    {
+      "op": "cutCylinder",
+      "name": "groove",
+      "radius": 62.5,
+      "height": 3,
+      "position": [0, 0, 24],
+      "axis": "z"
+    },
+    {
+      "op": "cutCylinder",
+      "name": "groove inner",
+      "radius": 47.5,
+      "height": 3,
+      "position": [0, 0, 24],
+      "axis": "z"
+    },
+    {
+      "op": "cutCylinder",
+      "name": "bolt hole 1",
+      "radius": 8,
+      "height": 24,
+      "position": [72.5, 0, 0],
+      "axis": "z"
+    },
+    {
+      "op": "cutCylinder",
+      "name": "bolt hole 2",
+      "radius": 8,
+      "height": 24,
+      "position": [36.25, 62.82, 0],
+      "axis": "z"
+    },
+    {
+      "op": "cutCylinder",
+      "name": "bolt hole 3",
+      "radius": 8,
+      "height": 24,
+      "position": [-36.25, 62.82, 0],
+      "axis": "z"
+    },
+    {
+      "op": "cutCylinder",
+      "name": "bolt hole 4",
+      "radius": 8,
+      "height": 24,
+      "position": [-72.5, 0, 0],
+      "axis": "z"
+    },
+    {
+      "op": "cutCylinder",
+      "name": "bolt hole 5",
+      "radius": 8,
+      "height": 24,
+      "position": [-36.25, -62.82, 0],
+      "axis": "z"
+    },
+    {
+      "op": "cutCylinder",
+      "name": "bolt hole 6",
+      "radius": 8,
+      "height": 24,
+      "position": [36.25, -62.82, 0],
+      "axis": "z"
+    },
+    {
+      "op": "cutCylinder",
+      "name": "bolt hole 7",
+      "radius": 8,
+      "height": 24,
+      "position": [72.5, 0, 0],
+      "axis": "z"
+    },
+    {
+      "op": "cutCylinder",
+      "name": "bolt hole 8",
+      "radius": 8,
+      "height": 24,
+      "position": [0, -72.5, 0],
+      "axis": "z"
+    }
+  ]
+}
+--- New Request Received ---
+Images received: 22410
+AI raw response: {
+"units": "mm",
+  "assumptions": ["Inferred base block position and rib/gusset details due to limited views"],
+  "operations": [
+    {
+      "op": "box",
+      "name": "base block",
+      "size": [44, 40, 44],
+      "position": [22, 20, -22],
+      "color": "#30cfd0"
+    },
+    {
+      "op": "box",
+      "name": "base rail",
+      "size": [44, 10, 80],
+      "position": [22, 5, 22],
+      "color": "#30cfd0"
+    },
+    {
+      "op": "box",
+      "name": "rear vertical plate",
+      "size": [62, 68, 12],
+      "position": [22, 34, 80],
+      "color": "#30cfd0"
+    },
+    {
+      "op": "wedge",
+      "name": "central sloped support",
+      "size": [44, 28, 80],
+      "position": [22, 40, 22],
+      "rotation": [0, 0, 0],
+      "highSide": "back",
+      "color": "#30cfd0"
+    },
+    {
+      "op": "gusset",
+      "name": "triangular side rib 1",
+      "size": [10, 68, 44],
+      "position": [-11, 34, 33],
+      "corner": "backBottom",
+      "color": "#ff8a3d"
+    },
+    {
+      "op": "gusset",
+      "name": "triangular side rib 2",
+      "size": [10, 68, 44],
+      "position": [55, 34, 33],
+      "corner": "backBottom",
+      "color": "#ff8a3d"
+    }
+  ]
+}
+--- New Request Received ---
+Images received: 91786
+AI raw response: {
+"units": "mm",
+  "assumptions": ["Inferred base block and upright block dimensions from user notes."],
+  "operations": [
+    {
+      "op": "box",
+      "name": "base block",
+      "size": [80, 25, 70],
+      "position": [40, 12.5, 35],
+      "color": "#30cfd0"
+    },
+    {
+      "op": "box",
+      "name": "upright block",
+      "size": [50, 120, 45],
+      "position": [25, 60, 22.5],
+      "color": "#30cfd0"
+    },
+    {
+      "op": "cutWedge",
+      "name": "sloped top face",
+      "size": [50, 20, 45],
+      "position": [25, 110, 22.5],
+      "rotation": [0, 0, 0],
+      "highSide": "back"
+    }
+  ]
+}
+--- New Request Received ---
+Images received: 46819
+AI raw response: {
+"units": "mm",
+  "assumptions": [],
+  "operations": [
+    {
+      "op": "box",
+      "name": "main block",
+      "size": [40, 32, 11],
+      "position": [20, 16, 5.5],
+      "color": "#30cfd0"
+    },
+    {
+      "op": "box",
+      "name": "fork arm 1",
+      "size": [11, 40, 52],
+      "position": [35, 16, 31],
+      "color": "#30cfd0"
+    },
+    {
+      "op": "box",
+      "name": "fork arm 2",
+      "size": [11, 40, 52],
+      "position": [35, 16, -21],
+      "color": "#30cfd0"
+    },
+    {
+      "op": "cylinder",
+      "name": "rear projection",
+      "radius": 16,
+      "height": 32,
+      "position": [20, 16, -16],
+      "axis": "z",
+      "color": "#30cfd0"
+    },
+    {
+      "op": "cutCylinder",
+      "name": "fork hole 1",
+      "radius": 8,
+      "height": 40,
+      "position": [48, 16, 31],
+      "axis": "x"
+    },
+    {
+      "op": "cutCylinder",
+      "name": "fork hole 2",
+      "radius": 8,
+      "height": 40,
+      "position": [48, 16, -21],
+      "axis": "x"
+    },
+    {
+      "op": "cutCylinder",
+      "name": "body hole",
+      "radius": 9,
+      "height": 40,
+      "position": [20, 16, 5.5],
+      "axis": "y"
+    },
+    {
+      "op": "roundedPlate",
+      "name": "fork end 1",
+      "size": [22, 40, 11],
+      "position": [57, 16, 31],
+      "plane": "yz",
+      "cornerRadii": {
+        "topLeft": 16,
+        "topRight": 16,
+        "bottomRight": 0,
+        "bottomLeft": 0
+      },
+      "color": "#30cfd0"
+    },
+    {
+      "op": "roundedPlate",
+      "name": "fork end 2",
+      "size": [22, 40, 11],
+      "position": [57, 16, -21],
+      "plane": "yz",
+      "cornerRadii": {
+        "topLeft": 16,
+        "topRight": 16,
+        "bottomRight": 0,
+        "bottomLeft": 0
+      },
+      "color": "#30cfd0"
+    }
+  ]
+}
+--- New Request Received ---
+Images received: 46819
+AI raw response: {
+"units": "mm",
+  "assumptions": ["overall dimensions and major features are clearly defined"],
+  "operations": [
+    {
+      "op": "box",
+      "name": "main block",
+      "size": [40, 32, 11],
+      "position": [20, 16, -20.5],
+      "color": "#30cfd0"
+    },
+    {
+      "op": "box",
+      "name": "fork arm 1",
+      "size": [11, 40, 52],
+      "position": [15, 16, 6],
+      "color": "#30cfd0"
+    },
+    {
+      "op": "box",
+      "name": "fork arm 2",
+      "size": [11, 40, 52],
+      "position": [25, 16, 6],
+      "color": "#30cfd0"
+    },
+    {
+      "op": "cylinder",
+      "name": "rear projection",
+      "radius": 16,
+      "height": 32,
+      "position": [20, 16, -31.5],
+      "axis": "z",
+      "color": "#30cfd0"
+    },
+    {
+      "op": "cutCylinder",
+      "name": "fork hole 1",
+      "radius": 8,
+      "height": 40,
+      "position": [15, 16, 42],
+      "axis": "z"
+    },
+    {
+      "op": "cutCylinder",
+      "name": "fork hole 2",
+      "radius": 8,
+      "height": 40,
+      "position": [25, 16, 42],
+      "axis": "z"
+    },
+    {
+      "op": "cutCylinder",
+      "name": "body hole",
+      "radius": 9,
+      "height": 40,
+      "position": [20, 8, -20.5],
+      "axis": "x"
+    },
+    {
+      "op": "cutWedge",
+      "name": "round fork ends",
+      "size": [16, 40, 16],
+      "position": [15, 16, 58],
+      "rotation": [0, 0, 0],
+      "highSide": "front"
+    },
+    {
+      "op": "cutWedge",
+      "name": "round fork ends",
+      "size": [16, 40, 16],
+      "position": [25, 16, 58],
+      "rotation": [0, 0, 0],
+      "highSide": "front"
+    }
+  ]
+}
+--- New Request Received ---
+Images received: 46819
+AI raw response: {
+"units": "mm",
+  "assumptions": ["Inferred the rear projection as cylindrical based on isometric view"],
+  "operations": [
+    {
+      "op": "box",
+      "name": "main block",
+      "size": [40, 32, 11],
+      "position": [20, 16, -20.5],
+      "color": "#30cfd0"
+    },
+    {
+      "op": "box",
+      "name": "fork arm 1",
+      "size": [11, 40, 52],
+      "position": [15, 16, 6],
+      "color": "#30cfd0"
+    },
+    {
+      "op": "box",
+      "name": "fork arm 2",
+      "size": [11, 40, 52],
+      "position": [5, 16, 6],
+      "color": "#30cfd0"
+    },
+    {
+      "op": "cutCylinder",
+      "name": "fork hole 1",
+      "radius": 8,
+      "height": 100,
+      "position": [20, 16, -10],
+      "axis": "z"
+    },
+    {
+      "op": "cutCylinder",
+      "name": "fork hole 2",
+      "radius": 8,
+      "height": 100,
+      "position": [0, 16, -10],
+      "axis": "z"
+    },
+    {
+      "op": "cutCylinder",
+      "name": "body hole",
+      "radius": 9,
+      "height": 40,
+      "position": [20, 16, -16],
+      "axis": "x"
+    },
+    {
+      "op": "cylinder",
+      "name": "rear projection",
+      "radius": 16,
+      "height": 32,
+      "position": [20, 16, -31.5],
+      "axis": "z",
+      "color": "#30cfd0"
+    },
+    {
+      "op": "roundedPlate",
+      "name": "fork end 1",
+      "size": [11, 40, 16],
+      "position": [15, 16, 38],
+      "plane": "xz",
+      "cornerRadii": {
+        "topLeft": 0,
+        "topRight": 0,
+        "bottomRight": 16,
+        "bottomLeft": 0
+      },
+      "color": "#30cfd0"
+    },
+    {
+      "op": "roundedPlate",
+      "name": "fork end 2",
+      "size": [11, 40, 16],
+      "position": [5, 16, 38],
+      "plane": "xz",
+      "cornerRadii": {
+        "topLeft": 0,
+        "topRight": 0,
+        "bottomRight": 16,
+        "bottomLeft": 0
+      },
+      "color": "#30cfd0"
+    }
+  ]
+}
+--- New Request Received ---
+Images received: 46819
+AI raw response: {
+"units": "mm",
+  "assumptions": ["overall dimensions and major features are clearly defined"],
+  "operations": [
+    {
+      "op": "box",
+      "name": "main block",
+      "size": [40, 32, 11],
+      "position": [20, 16, -20.5],
+      "color": "#30cfd0"
+    },
+    {
+      "op": "box",
+      "name": "fork arm 1",
+      "size": [11, 40, 52],
+      "position": [15, 16, 6],
+      "color": "#30cfd0"
+    },
+    {
+      "op": "box",
+      "name": "fork arm 2",
+      "size": [11, 40, 52],
+      "position": [25, 16, 6],
+      "color": "#30cfd0"
+    },
+    {
+      "op": "cylinder",
+      "name": "rear projection",
+      "radius": 16,
+      "height": 32,
+      "position": [20, 16, -31.5],
+      "axis": "z",
+      "color": "#30cfd0"
+    },
+    {
+      "op": "cutCylinder",
+      "name": "fork hole 1",
+      "radius": 8,
+      "height": 40,
+      "position": [15, 16, 42],
+      "axis": "z"
+    },
+    {
+      "op": "cutCylinder",
+      "name": "fork hole 2",
+      "radius": 8,
+      "height": 40,
+      "position": [25, 16, 42],
+      "axis": "z"
+    },
+    {
+      "op": "cutCylinder",
+      "name": "body hole",
+      "radius": 9,
+      "height": 40,
+      "position": [20, 8, -20.5],
+      "axis": "x"
+    },
+    {
+      "op": "cutWedge",
+      "name": "round fork ends",
+      "size": [16, 40, 11],
+      "position": [15, 16, 58],
+      "rotation": [0, 0, 0],
+      "highSide": "front"
+    },
+    {
+      "op": "cutWedge",
+      "name": "round fork ends",
+      "size": [16, 40, 11],
+      "position": [25, 16, 58],
+      "rotation": [0, 0, 0],
+      "highSide": "front"
+    }
+  ]
+}
+--- New Request Received ---
+Images received: 22410
+AI raw response: {
+"units": "mm",
+  "assumptions": ["rib width assumed 12mm"],
+  "operations": [
+    {
+      "op": "box",
+      "name": "front block",
+      "size": [44, 40, 44],
+      "position": [0, 20, -44],
+      "color": "#30cfd0"
+    },
+    {
+      "op": "box",
+      "name": "rear plate",
+      "size": [12, 68, 68],
+      "position": [124, 34, -34],
+      "color": "#30cfd0"
+    },
+    {
+      "op": "triangularPrism",
+      "name": "central rib",
+      "points": [[-34, 0], [34, 0], [34, 28]],
+      "depth": 12,
+      "position": [0, 20, -44],
+      "rotation": [0, 0, 0],
+      "color": "#ff8a3d"
+    }
+  ]
+}
