@@ -1,6 +1,6 @@
 import React, { useMemo, useState } from 'react';
 import { Canvas } from '@react-three/fiber';
-import { OrbitControls, Stage } from '@react-three/drei';
+import { OrbitControls, Stage, Text } from '@react-three/drei';
 import * as THREE from 'three';
 import { booleans, extrusions, geometries, primitives, transforms } from '@jscad/modeling';
 
@@ -165,11 +165,54 @@ type CadOperation =
 
 type CadPart = BoxPart | TriangularPrismPart | CylinderPart | MeshPart;
 
+interface ArchitectureOpening {
+  kind: 'door' | 'window';
+  center: number;
+  width: number;
+  height: number;
+  sill: number;
+}
+
+interface ArchitectureWall {
+  name?: string;
+  start: [number, number];
+  end: [number, number];
+  thickness: number;
+  height: number;
+  baseY?: number;
+  color?: string;
+  openings?: ArchitectureOpening[];
+}
+
+interface ArchitectureSlab {
+  name?: string;
+  polygon: [number, number][];
+  y: number;
+  thickness: number;
+  opacity?: number;
+  color?: string;
+}
+
+interface ArchitectureRoom {
+  name: string;
+  position: [number, number];
+}
+
+interface ArchitectureData {
+  scale?: number;
+  walls?: ArchitectureWall[];
+  floorSlabs?: ArchitectureSlab[];
+  roofSlabs?: ArchitectureSlab[];
+  rooms?: ArchitectureRoom[];
+}
+
 interface AssemblyCadData {
   units?: string;
+  modelType?: 'cad' | 'architecture';
   assumptions?: string[];
   operations?: CadOperation[];
   parts?: CadPart[];
+  architecture?: ArchitectureData;
 }
 
 type CadData = LegacyCadData | AssemblyCadData;
@@ -573,13 +616,181 @@ function OperationModel({ operations }: { operations: CadOperation[] }) {
   );
 }
 
+function ArchitectureSlabMesh({ slab, transparent = false }: { slab: ArchitectureSlab; transparent?: boolean }) {
+  const shape = useMemo(() => {
+    const s = new THREE.Shape();
+    slab.polygon.forEach(([x, z], index) => {
+      if (index === 0) s.moveTo(x, z);
+      else s.lineTo(x, z);
+    });
+    s.closePath();
+    return s;
+  }, [slab.polygon]);
+
+  return (
+    <mesh position={[0, slab.y + slab.thickness / 2, 0]} rotation={[-Math.PI / 2, 0, 0]}>
+      <extrudeGeometry args={[shape, { depth: slab.thickness, bevelEnabled: false }]} />
+      <meshStandardMaterial
+        color={slab.color ?? (transparent ? '#80dce8' : '#bfc3c7')}
+        opacity={transparent ? slab.opacity ?? 0.35 : 1}
+        transparent={transparent}
+        roughness={0.45}
+        metalness={0.05}
+        side={THREE.DoubleSide}
+      />
+    </mesh>
+  );
+}
+
+function WallPiece({
+  localCenter,
+  size,
+  color,
+}: {
+  localCenter: [number, number, number];
+  size: [number, number, number];
+  color: string;
+}) {
+  if (size.some((value) => value <= 0.001)) return null;
+  return (
+    <mesh position={localCenter}>
+      <boxGeometry args={size} />
+      <meshStandardMaterial color={color} roughness={0.62} metalness={0.02} />
+    </mesh>
+  );
+}
+
+function ArchitectureWallMesh({ wall }: { wall: ArchitectureWall }) {
+  const dx = wall.end[0] - wall.start[0];
+  const dz = wall.end[1] - wall.start[1];
+  const length = Math.hypot(dx, dz);
+  if (length <= 0.001) return null;
+
+  const angle = Math.atan2(dz, dx);
+  const midpoint: [number, number, number] = [(wall.start[0] + wall.end[0]) / 2, 0, (wall.start[1] + wall.end[1]) / 2];
+  const baseY = wall.baseY ?? 0;
+  const color = wall.color ?? '#f6f0e6';
+  const thickness = wall.thickness;
+  const openings = [...(wall.openings ?? [])]
+    .filter((opening) => opening.width > 0 && opening.height > 0)
+    .sort((a, b) => a.center - b.center);
+
+  const pieces: React.ReactNode[] = [];
+  let cursor = 0;
+
+  openings.forEach((opening, index) => {
+    const start = Math.max(0, opening.center - opening.width / 2);
+    const end = Math.min(length, opening.center + opening.width / 2);
+    const leftWidth = Math.max(0, start - cursor);
+    if (leftWidth > 0.001) {
+      pieces.push(
+        <WallPiece
+          key={`left-${index}`}
+          localCenter={[cursor + leftWidth / 2 - length / 2, baseY + wall.height / 2, 0]}
+          size={[leftWidth, wall.height, thickness]}
+          color={color}
+        />
+      );
+    }
+
+    const openingWidth = Math.max(0, end - start);
+    const bottomHeight = Math.max(0, opening.sill);
+    const topStart = opening.sill + opening.height;
+    const topHeight = Math.max(0, wall.height - topStart);
+    const openingCenterX = start + openingWidth / 2 - length / 2;
+
+    if (bottomHeight > 0.001) {
+      pieces.push(
+        <WallPiece
+          key={`bottom-${index}`}
+          localCenter={[openingCenterX, baseY + bottomHeight / 2, 0]}
+          size={[openingWidth, bottomHeight, thickness]}
+          color={color}
+        />
+      );
+    }
+
+    if (topHeight > 0.001) {
+      pieces.push(
+        <WallPiece
+          key={`top-${index}`}
+          localCenter={[openingCenterX, baseY + topStart + topHeight / 2, 0]}
+          size={[openingWidth, topHeight, thickness]}
+          color={color}
+        />
+      );
+    }
+
+    cursor = Math.max(cursor, end);
+  });
+
+  const rightWidth = Math.max(0, length - cursor);
+  if (rightWidth > 0.001) {
+    pieces.push(
+      <WallPiece
+        key="right"
+        localCenter={[cursor + rightWidth / 2 - length / 2, baseY + wall.height / 2, 0]}
+        size={[rightWidth, wall.height, thickness]}
+        color={color}
+      />
+    );
+  }
+
+  return (
+    <group position={midpoint} rotation={[0, -angle, 0]}>
+      {pieces}
+    </group>
+  );
+}
+
+function ArchitectureRoomLabel({ room }: { room: ArchitectureRoom }) {
+  return (
+    <Text
+      position={[room.position[0], 0.06, room.position[1]]}
+      rotation={[-Math.PI / 2, 0, 0]}
+      fontSize={0.28}
+      color="#243033"
+      anchorX="center"
+      anchorY="middle"
+      maxWidth={2.4}
+      textAlign="center"
+    >
+      {room.name}
+    </Text>
+  );
+}
+
+function ArchitectureModel({ architecture }: { architecture: ArchitectureData }) {
+  return (
+    <group>
+      {(architecture.floorSlabs ?? []).map((slab, index) => (
+        <ArchitectureSlabMesh key={`floor-${slab.name ?? index}`} slab={slab} />
+      ))}
+      {(architecture.walls ?? []).map((wall, index) => (
+        <ArchitectureWallMesh key={`wall-${wall.name ?? index}`} wall={wall} />
+      ))}
+      {(architecture.roofSlabs ?? []).map((slab, index) => (
+        <ArchitectureSlabMesh key={`roof-${slab.name ?? index}`} slab={slab} transparent />
+      ))}
+      {(architecture.rooms ?? []).map((room, index) => (
+        <ArchitectureRoomLabel key={`room-${room.name}-${index}`} room={room} />
+      ))}
+    </group>
+  );
+}
+
 function CadModel({ data }: { data: CadData }) {
   if (isLegacyCadData(data)) {
     return <LegacyBracketModel data={data} />;
   }
 
+  if (data.modelType === 'architecture' && data.architecture) {
+    return <ArchitectureModel architecture={data.architecture} />;
+  }
+
   return (
     <group>
+      {data.architecture && <ArchitectureModel architecture={data.architecture} />}
       {data.operations && data.operations.length > 0 && <OperationModel operations={data.operations} />}
       {(data.parts ?? []).map((part, index) => (
         <CadPartMesh key={`${part.type}-${part.name ?? index}`} part={part} />
@@ -589,7 +800,7 @@ function CadModel({ data }: { data: CadData }) {
 }
 
 function App() {
-  const [cadData, setCadData] = useState<CadData>(defaultCadData);
+  const [cadData, setCadData] = useState<CadData | null>(defaultCadData);
   const [loading, setLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
@@ -606,7 +817,8 @@ function App() {
 
     const hasAssemblyShape =
       (Array.isArray(maybeData.operations) && maybeData.operations.length > 0) ||
-      (Array.isArray(maybeData.parts) && maybeData.parts.length > 0);
+      (Array.isArray(maybeData.parts) && maybeData.parts.length > 0) ||
+      !!maybeData.architecture;
     return hasLegacyShape || hasAssemblyShape;
   };
 
@@ -622,6 +834,7 @@ function App() {
 
     setLoading(true);
     setErrorMsg(null);
+    setCadData(null);
     const formData = new FormData();
     selectedFiles.forEach((file) => formData.append('images', file));
     formData.append('notes', dimensionNotes);
@@ -650,9 +863,19 @@ function App() {
     }
   };
 
-  const partCount = isLegacyCadData(cadData)
+  const partCount = !cadData
+    ? 0
+    : isLegacyCadData(cadData)
     ? 2
-    : (cadData.operations?.length ?? 0) + (cadData.parts?.length ?? 0);
+    : cadData.modelType === 'architecture' && cadData.architecture
+      ? (cadData.architecture.walls?.length ?? 0) +
+        (cadData.architecture.floorSlabs?.length ?? 0) +
+        (cadData.architecture.roofSlabs?.length ?? 0)
+      : (cadData.operations?.length ?? 0) +
+        (cadData.parts?.length ?? 0) +
+        (cadData.architecture?.walls?.length ?? 0) +
+        (cadData.architecture?.floorSlabs?.length ?? 0) +
+        (cadData.architecture?.roofSlabs?.length ?? 0);
 
   return (
     <div style={{ display: 'flex', height: '100vh', background: '#111' }}>
@@ -687,7 +910,7 @@ function App() {
         <div style={{ marginTop: '20px' }}>
           <h4>Detected model</h4>
           <p>{partCount} renderable part{partCount === 1 ? '' : 's'}</p>
-          {!isLegacyCadData(cadData) && cadData.assumptions && cadData.assumptions.length > 0 && (
+          {cadData && !isLegacyCadData(cadData) && cadData.assumptions && cadData.assumptions.length > 0 && (
             <pre style={{ fontSize: '12px', whiteSpace: 'pre-wrap', color: '#ffd166' }}>
               {cadData.assumptions.join('\n')}
             </pre>
@@ -701,7 +924,7 @@ function App() {
       <div style={{ flex: 1 }}>
         <Canvas shadows camera={{ position: [160, 130, 180], fov: 45 }}>
           <Stage environment="city" intensity={0.6}>
-            <CadModel data={cadData} />
+            {cadData && <CadModel data={cadData} />}
           </Stage>
           <OrbitControls makeDefault />
         </Canvas>
